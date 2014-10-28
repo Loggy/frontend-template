@@ -1,6 +1,8 @@
 'use strict';
 
 var gulp = require('gulp');
+var page = require('./package.json')
+var data = require('gulp-data')
 // js
 var uglify = require('gulp-uglify');
 var jshint = require('gulp-jshint');
@@ -41,7 +43,11 @@ gulp.task('css', function(){
 
 gulp.task('html', function(){
 	gulp.src('./src/views/*.jade')
-	.pipe(jade())
+	.pipe(jade({
+		locals:{
+			page:page
+		}
+	}))
 	.pipe(gulp.dest('./public'))
 	.pipe(connect.reload())
 });
