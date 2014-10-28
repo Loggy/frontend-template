@@ -2,7 +2,6 @@
 
 var gulp = require('gulp');
 var page = require('./package.json')
-var data = require('gulp-data')
 // js
 var uglify = require('gulp-uglify');
 var jshint = require('gulp-jshint');
