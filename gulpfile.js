@@ -19,11 +19,13 @@ var sprite = require('gulp.spritesmith');
 // watch
 var livereload = require('gulp-livereload');
 var connect = require('gulp-connect');
+// build
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
 
 gulp.task('js', function(){
 	gulp.src('./src/js/*.js')
 	.pipe(jshint())
-	.pipe(uglify())
 	.pipe(gulp.dest('./public/js'))
 	.pipe(connect.reload())
 });
@@ -75,6 +77,14 @@ gulp.task('sprite', function(){
 	spriteData.css.pipe(gulp.dest('./src/stylus'));
 });
 
+gulp.task('build', function() {
+    	browserify('./src/js/app.js')
+         .bundle()
+         .pipe(source('build.js'))
+		.pipe(uglify())
+        .pipe(gulp.dest('./public/js/'));
+});
+
 gulp.task('connect', function() {
   connect.server({
     root: './public',
@@ -90,4 +100,5 @@ gulp.task('watch', function(){
 
 gulp.task('htmlval', ['htmlvalidate']);
 gulp.task('live', ['css', 'js', 'html', 'img', 'sprite', 'watch', 'connect']);
+gulp.task('build', ['css', 'build', 'html', 'img', 'sprite']);
 gulp.task('default', ['css', 'js', 'html', 'img', 'sprite']);
